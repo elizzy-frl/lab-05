@@ -32,6 +32,7 @@ fun CityListScreen(
     cities: List<City>,
     onAddCity: (City) -> Unit,
     onUpdateCity: (City, City) -> Unit,
+    onDeleteCity: (City) -> Unit,   // parameter for deleting citys
     modifier: Modifier = Modifier
 ) {
     var newCityName by remember { mutableStateOf("") }
@@ -46,6 +47,19 @@ fun CityListScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
+            selectedCity?.let { city ->
+                FloatingActionButton(
+                    modifier = Modifier.padding(16.dp),
+                    onClick = {
+                        onDeleteCity(city)
+                        selectedCity = null
+                        editedCityName = ""
+                        editedProvinceName = ""
+                    }
+                ) {
+                    Text("DELETE")
+                }
+            }
             FloatingActionButton(
                 modifier = Modifier.padding(16.dp),
                 onClick = {
@@ -59,6 +73,7 @@ fun CityListScreen(
             ) {
                 Text("+")
             }
+
         }
         if (showAddCityFields) {
             Row(
@@ -213,7 +228,8 @@ fun CityListScreenPreview() {
                 City("Calgary", "AB")
             ),
             onAddCity = {},
-            onUpdateCity = { _, _ -> }
+            onUpdateCity = { _, _ -> },
+            onDeleteCity = {}
         )
     }
 }
